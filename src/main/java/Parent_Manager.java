@@ -15,7 +15,7 @@ public class Parent_Manager {
 
     public void Display_Info() {
         System.out.println("Parent Data from Database:");
-        Database_Manager.PrintParentTableData();
+        DatabaseManager.printParentTableData();
     }
 
     public void Change_Parent_Details() {
@@ -40,11 +40,11 @@ public class Parent_Manager {
         System.out.print("Enter New Student Name: ");
         String stuName = scanner.nextLine();
 
-        Database_Manager.updateParent(id, name, pwd, phone, stuId, stuName);
+        DatabaseManager.updateParent(id, name, pwd, phone, stuId, stuName);
         System.out.println("Parent details updated in the database.");
     }
 
     public void addParent(String name, String pwd, int phone, int stuId, String stuName) {
-        Database_Manager.insertParentData(name, pwd, phone, stuId, stuName);
+        DatabaseManager.insertParentData(name, pwd, phone, stuId, stuName);
     }
 }
