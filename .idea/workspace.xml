@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="417ff527-b249-4e6f-8c33-4ceee51cd887" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CreateNewUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/LoginManager.java" afterDir="false" />
+    <list default="true" id="417ff527-b249-4e6f-8c33-4ceee51cd887" name="Changes" comment="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Parent_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Parent_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Student_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Student_Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LoginManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/testMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/testMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/DatabaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DatabaseManager.class" afterDir="false" />
     </list>
@@ -29,6 +24,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -37,12 +37,12 @@
     &quot;assignee&quot;: &quot;sineth2121&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Rusiru-Randika/Safe-School-Track.git&quot;,
-    &quot;accountId&quot;: &quot;8e58c062-6639-4748-84f1-40c1881d0b1c&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Rusiru-Randika/Safe-School-Track.git",
+    "accountId": "70be0d56-c16a-49fc-9be7-74fe38088009"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -59,7 +59,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "login__and__create__user",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Lenovo/Desktop/aas",
     "node.js.detected.package.eslint": "true",
@@ -100,11 +100,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1737144586473</updated>
-      <workItem from="1737174541090" duration="21255000" />
+      <workItem from="1737174541090" duration="22881000" />
     </task>
+    <task id="LOCAL-00001" summary="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts.">
+      <option name="closed" value="true" />
+      <created>1737226467376</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737226467377</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts." />
+    <option name="LAST_COMMIT_MESSAGE" value="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts." />
   </component>
 </project>

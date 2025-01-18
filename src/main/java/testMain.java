@@ -5,7 +5,7 @@ public class testMain {
     public static void main(String[] args) {
         // Step 1: Connect to the database
         DatabaseManager.connectToDatabase();
-
+        DatabaseManager.createParentTable();
         //..........
         LoginManager.login();
 

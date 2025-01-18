@@ -35,7 +35,7 @@ public class DatabaseManager {
 
     //*********************************************************************************************************************
 //create Parent table in the database if not exist.
-    private static void createParentTable() {
+    public static void createParentTable() {
         if (connection == null) {
             System.out.println("Connection is null. Cannot create table.");
             return;

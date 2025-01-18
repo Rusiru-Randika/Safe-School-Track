@@ -24,24 +24,43 @@ public class LoginManager {
                     System.out.println("\tLoading...");
                     int UserID = DatabaseManager.giveUserGetId(username);
                 if (UserID > 0) {
-                        String password = DatabaseManager.giveUserGetPassword(username);
-                        while (Num_login_attempts<Max_login_attempts) {
-                            if(Num_login_attempts==(Max_login_attempts-1)){
-                                System.out.println("You have only 1 attempt more...");
+                    String password = DatabaseManager.giveUserGetPassword(username);
+                    while (Num_login_attempts < Max_login_attempts) {
+                        if (Num_login_attempts == (Max_login_attempts - 1)) {
+                            System.out.println("You have only 1 attempt more...");
+                        } else {
+                            System.out.println("You have " + (Max_login_attempts - Num_login_attempts) + " attempts...");
+                        }
+                        System.out.print("Enter password : ");
+                        String input_password = scn.next();
+                        if (password.equals(input_password)) {
+                            System.out.println("Checking...");
+                            success = true;
+                            String[] arr = DatabaseManager.getParentData(UserID);
+                            System.out.println("\t*** Hello! " + arr[0] + ", You are logged in! ***" + "\nYour User ID is " + UserID + " \n");
+                            Login_status = true;
+
+                            String ans="";
+
+                            while (ans != "Y" || ans != "N") {
+                                System.out.print("\nDo you want to change password? (Y/N) : ");
+                                ans = scn.next();
+                                if (ans.equals("Y")) {
+                                    System.out.print("\nEnter new password : ");
+                                    String newPassword = scn.next();
+                                    Boolean result = DatabaseManager.updateParentField(UserID, "pwd", newPassword);
+                                    if (result) {
+                                        System.out.println("*** Password changed successfully! ***");
+                                    } else {
+                                        System.out.println("*** Password change failed! ***");
+                                    }
+                                } else if (ans.equals("N")) {
+                                    break;
+                                }
                             }
-                            else{
-                                System.out.println("You have " + (Max_login_attempts - Num_login_attempts) + " attempts...");
-                            }
-                            System.out.print("Enter password : ");
-                            String input_password = scn.next();
-                            if (password.equals(input_password)) {
-                                System.out.println("Checking...");
-                                success=true;
-                                String[] arr = DatabaseManager.getParentData(UserID);
-                                System.out.println("\t*** Hello! "+arr[0]+", You are logged in! ***"+"\nYour User ID is "+UserID+" \n");
-                                Login_status=true;
-                                return true;
-                            }
+                            return true;
+                        }
+
 
                            else {
                                 System.out.println("\t* Wrong password! *");
