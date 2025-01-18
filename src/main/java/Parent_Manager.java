@@ -40,11 +40,11 @@ public class Parent_Manager {
         System.out.print("Enter New Student Name: ");
         String stuName = scanner.nextLine();
 
-        DatabaseManager.updateParent(id, name, pwd, phone, stuId, stuName);
+//        DatabaseManager.updateParentField(id, name, pwd, phone, stuId, stuName);
         System.out.println("Parent details updated in the database.");
     }
 
     public void addParent(String name, String pwd, int phone, int stuId, String stuName) {
-        DatabaseManager.insertParentData(name, pwd, phone, stuId, stuName);
+//        DatabaseManager.insertParentData(name, pwd, phone, stuId, stuName);
     }
 }

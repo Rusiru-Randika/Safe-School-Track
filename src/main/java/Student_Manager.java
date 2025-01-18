@@ -19,7 +19,7 @@ public class Student_Manager {
 
     public void Display_Info() {
         System.out.println("Student Data from Database:");
-        Database_Manager.PrintStudentTableData();
+        DatabaseManager.printStuTableData();
     }
 
     public void editStudentDetails(Scanner scanner) {
@@ -46,11 +46,11 @@ public class Student_Manager {
         System.out.print("Enter New Email: ");
         String email = scanner.nextLine();
 
-        Database_Manager.updateStudent(id, name, school, grade, teacherNum, address, email);
+//        DatabaseManager.updateStudent(id, name, school, grade, teacherNum, address, email);
         System.out.println("Student details updated in the database.");
     }
 
     public void addStudent(String name, String school, String grade, int teacherNum, String address, String email) {
-        Database_Manager.insertStudentData(name, school, grade, teacherNum, address, email);
+//        DatabaseManager.insertStudentData(name, school, grade, teacherNum, address, email);
     }
 }

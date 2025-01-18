@@ -327,7 +327,7 @@ public class DatabaseManager {
             if (result.next()) {
                 return result.getInt("Parent_Id");
             } else {
-                return 0;
+                return -1;
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -385,7 +385,7 @@ public class DatabaseManager {
                     CREATE TABLE IF NOT EXISTS Student (
                         Student_Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Student_Name TEXT NOT NULL,
-                        Student_Age TEXT NOT NULL,
+                        Student_Age INTEGER NOT NULL,
                         Student_Address TEXT NOT NULL,
                         Student_School TEXT NOT NULL,
                         Student_Teacher_Number INTEGER NOT NULL,
@@ -407,12 +407,12 @@ public class DatabaseManager {
 //add Student data to database
 //parameters-(stu name,age,address,school,Teacher num,studentStatus,parent ID)
 //id will be returned after data insertion,in any exception -1 will be returned.
-    public static int insertStuData(String name, String age,String address,String school,int teacherNum,String stuStatus,int parentId) {
+    public static int insertStuData(String name, int age,String address,String school,int teacherNum,String stuStatus,int parentId) {
         createStuTable(); // Automatically create the table if it doesn't exist
         String insertSQL = "INSERT INTO Student (Student_Name, Student_Age, Student_Address, Student_School, Student_Teacher_Number, Student_Status, Parent_Id) VALUES (?, ?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
-            statement.setString(2, age);
+            statement.setInt(2, age);
             statement.setString(3, address);
             statement.setString(4, school);
             statement.setInt(5, teacherNum);
@@ -446,7 +446,7 @@ public class DatabaseManager {
             while (resultSet.next()) {
                 int id=resultSet.getInt("Student_Id");
                 String name =resultSet.getString("Student_Name");
-                String age =resultSet.getString("Student_Age");
+                int age =resultSet.getInt("Student_Age");
                 String address=resultSet.getString("Student_Address");
                 String school=resultSet.getString("Student_School");
                 int teacherNum=resultSet.getInt("Student_Teacher_Number");
