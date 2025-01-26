@@ -4,17 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="417ff527-b249-4e6f-8c33-4ceee51cd887" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/testMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Database/Database.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Database_Manager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Parent_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Parent_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Database_Manager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Parent_Manager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Student_Manager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Test.class" beforeDir="false" />
+    <list default="true" id="417ff527-b249-4e6f-8c33-4ceee51cd887" name="Changes" comment="Changed CreateParentTable from private to public in DatabaseManager.&#10;Added Change password feature.Dev tested.">
+      <change afterPath="$PROJECT_DIR$/Credential.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/note.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Driver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/NotificationManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CreateNewUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CreateNewUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LoginManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LoginManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Parent_Manager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Student_Manager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/testMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/DatabaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DatabaseManager.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,11 +29,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -40,7 +51,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Rusiru-Randika/Safe-School-Track.git&quot;,
-    &quot;accountId&quot;: &quot;8e58c062-6639-4748-84f1-40c1881d0b1c&quot;
+    &quot;accountId&quot;: &quot;70be0d56-c16a-49fc-9be7-74fe38088009&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -48,21 +59,54 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2rlrcrtShwkVexD57Iz2QBcyFEf" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Driver.executor": "Run",
+    "Application.LoginManager.executor": "Run",
+    "Application.Main.executor": "Run",
     "Application.testMain.executor": "Run",
+    "JAR Application.javax.mail.jar (1).executor": "Run",
+    "JAR Application.javax.mail.jar.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "login__and__create__user",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Desktop/aas"
+    "last_opened_file_path": "C:/Users/Lenovo/Desktop/aas",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager">
+    <configuration name="javax.mail.jar (1)" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$USER_HOME$/Downloads/javax.mail.jar!/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="javax.mail.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$USER_HOME$/Downloads/javax.mail.jar!/" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="aas" />
       <method v="2">
@@ -74,6 +118,20 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JAR Application.javax.mail.jar (1)" />
+        <item itemvalue="JAR Application.javax.mail.jar" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -83,7 +141,51 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1737144586473</updated>
+      <workItem from="1737174541090" duration="23506000" />
+      <workItem from="1737277558201" duration="2882000" />
+      <workItem from="1737348633921" duration="32000" />
+      <workItem from="1737476104154" duration="7848000" />
+      <workItem from="1737653238535" duration="4416000" />
+      <workItem from="1737684632935" duration="9914000" />
+      <workItem from="1737867879446" duration="2935000" />
+      <workItem from="1737876589733" duration="4209000" />
     </task>
+    <task id="LOCAL-00001" summary="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts.">
+      <option name="closed" value="true" />
+      <created>1737226467376</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737226467377</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Changed CreateParentTable from private to public in DatabaseManager.&#10;Added Change password feature.Dev tested.">
+      <option name="closed" value="true" />
+      <created>1737227697017</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1737227697017</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts." />
+    <MESSAGE value="Changed CreateParentTable from private to public in DatabaseManager.&#10;Added Change password feature.Dev tested." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed CreateParentTable from private to public in DatabaseManager.&#10;Added Change password feature.Dev tested." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/DatabaseManager.java</url>
+          <line>517</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
