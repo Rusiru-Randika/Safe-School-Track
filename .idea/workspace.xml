@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="417ff527-b249-4e6f-8c33-4ceee51cd887" name="Changes" comment="final programm">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database.db" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/StudentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/StudentManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/CreateNewUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/CreateNewUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DatabaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DatabaseManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Driver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Driver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/LoginManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/LoginManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/StudentManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/StudentManager.class" afterDir="false" />
-    </list>
+    <list default="true" id="417ff527-b249-4e6f-8c33-4ceee51cd887" name="Changes" comment="this is the final updated one" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,12 +32,15 @@
     &quot;assignee&quot;: &quot;sineth2121&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Rusiru-Randika/Safe-School-Track.git",
-    "accountId": "8e58c062-6639-4748-84f1-40c1881d0b1c"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Rusiru-Randika/Safe-School-Track.git&quot;,
+    &quot;accountId&quot;: &quot;8e58c062-6639-4748-84f1-40c1881d0b1c&quot;
   }
-}]]></component>
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -175,7 +168,8 @@
     <MESSAGE value="Did some changes in DatabaseManager.java,&#10;Added login and create user with password confirmations and existing user verification.&#10;Added some user-friendly Souts." />
     <MESSAGE value="Changed CreateParentTable from private to public in DatabaseManager.&#10;Added Change password feature.Dev tested." />
     <MESSAGE value="final programm" />
-    <option name="LAST_COMMIT_MESSAGE" value="final programm" />
+    <MESSAGE value="this is the final updated one" />
+    <option name="LAST_COMMIT_MESSAGE" value="this is the final updated one" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
