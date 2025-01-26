@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 class StudentManager {
@@ -12,8 +11,11 @@ class StudentManager {
         for (int i = 0; i < sizeSchool; i++) {
             System.out.println((i + 1) + ") " + schoolList.get(i));
         }
+        System.out.println("press 0 to exit");
         int choose = scn.nextInt();
-
+        if(choose==0){
+            return;
+        }
         outerLoop:
         while (true) {
             if (choose <= 0 || choose > sizeSchool) {
@@ -61,32 +63,34 @@ class StudentManager {
 
 
             String[] studentData = DatabaseManager.getStuData(id);
-            System.out.println("+------------------+------------------+------------------+------------------+------------------+------------------+------------------+");
-            System.out.println("| Student Name     | Age              | Address          | School           | Teacher Number   | Status           | Parent ID        |");
-            System.out.println("+------------------+------------------+------------------+------------------+------------------+------------------+------------------+");
-            System.out.printf("| %-16s | %-16s | %-16s | %-16s | %-16s | %-16s | %-16s |\n",
-                    studentData[0], studentData[1], studentData[2], studentData[3], studentData[4], studentData[5], studentData[6]);
-            System.out.println("+------------------+------------------+------------------+------------------+------------------+------------------+------------------+");
+        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+        System.out.println("| Student Name     | Age              | Address          | School           | Teacher Number   | Status                                                | Parent ID        |");
+        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+        System.out.printf("| %-16s | %-16s | %-16s | %-16s | %-16s | %-55s| %-16s |\n",
+                studentData[0], studentData[1], studentData[2], studentData[3], studentData[4], studentData[5], studentData[6]);
+        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+
 
         int option = 0;
-        while (option < 1 || option > 6) {
+        while (option < 1 || option > 7) {
             System.out.println("Select new status:");
-            System.out.println("1. Not Get From School");
-            System.out.println("2. In the Bus");
-            System.out.println("3. Dropped");
-            System.out.println("4. Not Getting From School Today");
-            System.out.println("5. There is Issue Contact Teacher");
+            System.out.println("1. Dropped at home");
+            System.out.println("2. Dropped at school");
+            System.out.println("3. picked at home");
+            System.out.println("4. picked at school");
+            System.out.println("5. There is an issue Contact Teacher");
             System.out.println("6. Ignore/Pass");
+            System.out.println("7. Type special message");
             System.out.print("Enter option: ");
 
             if (scn.hasNextInt()) {
                 option = scn.nextInt();
                 scn.nextLine(); // Consume newline
-                if (option < 1 || option > 6) {
-                    System.out.println("Invalid option selected. Please enter a number between 1 and 6.");
+                if (option < 1 || option > 7) {
+                    System.out.println("Invalid option selected. Please enter a number between 1 and 7.");
                 }
             } else {
-                System.out.println("Invalid input. Please enter a number between 1 and 6.");
+                System.out.println("Invalid input. Please enter a number between 1 and 7.");
                 scn.next(); // Clear the invalid input
             }
         }
@@ -99,22 +103,26 @@ class StudentManager {
         String newStatus;
         switch (option) {
             case 1:
-                newStatus = "Not Get From School";
+                newStatus = "Driver message-Dropped at home";
                 break;
             case 2:
-                newStatus = "In the Bus";
+                newStatus = "Driver message-Dropped at school";
                 break;
             case 3:
-                newStatus = "Dropped";
+                newStatus = "Driver message-Picked at home";
                 break;
             case 4:
-                newStatus = "Not Getting From School Today";
+                newStatus = "Driver message-Picked at school";
                 break;
             case 5:
-                newStatus = "There is Issue Contact Teacher";
+                newStatus = "Driver message-There is an issue Contact Teacher";
+                break;
+            case 7:
+                System.out.println("Type special message");
+                newStatus = "Driver message-"+ scn.nextLine();
                 break;
             default:
-                return; // This should never happen due to the while loop validation
+                return;
         }
 
         boolean result = DatabaseManager.updateStuField(id, "Student_Status", newStatus);
@@ -127,8 +135,7 @@ class StudentManager {
 
     public static void displayStudentTable() {
         System.out.println("Student Data from Database:");
-        System.out.printf("%-10s %-15s %-5s %-20s %-15s %-15s %-35s %-10s%n", "ID", "Name", "Age", "Address", "School", "Teacher Number", "Status", "Parent ID");
-        DatabaseManager.printStuTableData();
+              DatabaseManager.printStuTableData();
     }
 }
 

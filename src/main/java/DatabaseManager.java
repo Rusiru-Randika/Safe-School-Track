@@ -440,6 +440,16 @@ class DatabaseManager{
         try (PreparedStatement statement = connection.prepareStatement(selectSQL);
              ResultSet resultSet = statement.executeQuery()) {
 
+
+            System.out.printf(
+                    "| %-10s | %-15s | %-5s | %-20s | %-15s | %-15s | %-55s | %-20s |%n",
+                    "ID", "Name", "Age", "Address", "School", "TeacherNum", "Status", "ParentID"
+            );
+            System.out.println(
+                    "+------------+-----------------+-------+----------------------+-----------------+-----------------+-------------------------------------------------------+------------+"
+            );
+
+
             while (resultSet.next()) {
                 int id = resultSet.getInt("Student_Id");
                 String name = resultSet.getString("Student_Name");
@@ -450,12 +460,16 @@ class DatabaseManager{
                 String stuStatus = resultSet.getString("Student_Status");
                 int parentId = resultSet.getInt("Parent_Id");
 
-                System.out.printf("%-10d %-15s %-5d %-20s %-15s %-15s %-35s %-10d%n", id, name, age, address, school, teacherNum, stuStatus, parentId);
+                System.out.printf(
+                        "| %-10d | %-15s | %-5d | %-20s | %-15s | %-15s | %-55s | %-20d |%n",
+                        id, name, age, address, school, teacherNum, stuStatus, parentId
+                );
             }
         } catch (Exception e) {
             System.out.println("Failed to read data: " + e.getMessage());
         }
     }
+
 
 
     //*********************************************************************************************************************
@@ -850,6 +864,21 @@ class DatabaseManager{
             return null;
         }
     }
+    //*******************************************************************************************************************
+    public static int getDriverRowCount() {
+        createDriverTable(); // Automatically create the table if it doesn't exist
+        String countSQL = "SELECT COUNT(*) AS row_count FROM Driver;";
+        try (PreparedStatement statement = connection.prepareStatement(countSQL)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("row_count");
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving row count: " + e.getMessage());
+        }
+        return -1;
+    }
+
 
 
 }

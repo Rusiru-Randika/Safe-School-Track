@@ -1,22 +1,20 @@
-import java.util.Scanner;
-
 class Driver extends User {
 
-        private String vanNumber;  // Driver's Van Number
+        private String vanNumber;
 
         // Constructor
         public Driver(int id, String name, String username, String password, String email, String phone, String vanNumber) {
-            super(id, name, username, password, email, phone); // Initialize User class fields
-            this.vanNumber = vanNumber; // Initialize Driver class specific field
+            super(id, name, username, password, email, phone);
+            this.vanNumber = vanNumber;
         }
         public Driver(){
-            super(0, "", "", "", "", "");  // Default values for parent fields
+            super(0, "", "", "", "", "");  // Default values for parent field
             this.vanNumber = null;
         }
 
         @Override
         public void setName(String name) {
-            this.name = name; // Set the name field in User class
+            this.name = name;
             DatabaseManager.updateDriverField(id,"name",name);
         }
 
@@ -28,7 +26,7 @@ class Driver extends User {
             }
             else{
                 System.out.println("Already taken username");
-            };
+            }
         }
 
         @Override
@@ -40,27 +38,22 @@ class Driver extends User {
 
         @Override
         public void setEmail(String email) {
-            this.email = email; // Set the email field in User class
+            this.email = email;
             DatabaseManager.updateDriverField(id,"email",email);
         }
 
         @Override
         public void setPhone(String phone) {
-            this.phone = phone; // Set the phone field in User class
+            this.phone = phone;
             DatabaseManager.updateDriverField(id,"phone",phone);
-        }
-
-        // Getter and Setter for vanNumber
-        public String getVanNumber() {
-            return vanNumber; // Return the van number
         }
 
         public void setVanNumber(String vanNumber) {
             this.vanNumber = vanNumber;
-            DatabaseManager.updateDriverField(id,"vanNo",vanNumber);// Set the van number
+            DatabaseManager.updateDriverField(id,"vanNo",vanNumber);
         }
     public String toString() {
-        // Return formatted string to display as a table row including number of students
+
         return String.format("| Id: %-5d | Name:%-15s | Username: %-15s | Email: %-20s | Phone: %-15s | Van Number: %-15s |",
                 id, name, username, email, phone, vanNumber);
     }
