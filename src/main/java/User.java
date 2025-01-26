@@ -1,12 +1,12 @@
 abstract class User {
-    protected int id;          // User ID
-    protected String name;     // User Name
-    protected String username; // Username
-    protected String password; // User Password
-    protected String email;    // User Email
-    protected String phone;    // User Phone
+    protected int id;
+    protected String name;
+    protected String username;
+    protected String password;
+    protected String email;
+    protected String phone;
 
-    // Constructor
+
     public User(int id, String name, String username, String password, String email, String phone) {
         this.id = id;
         this.name = name;
@@ -16,7 +16,7 @@ abstract class User {
         this.phone = phone;
     }
 
-    // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -53,7 +53,6 @@ abstract class User {
 
     @Override
     public String toString() {
-        // Return formatted string to display as a table row
         return String.format("| %-5d | %-15s | %-15s | %-20s | %-15s |", id, name, username, email, phone);
         }
 }

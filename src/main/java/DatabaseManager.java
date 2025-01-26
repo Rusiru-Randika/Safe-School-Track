@@ -850,6 +850,21 @@ class DatabaseManager{
             return null;
         }
     }
+    //*******************************************************************************************************************
+    public static int getDriverRowCount() {
+        createDriverTable(); // Automatically create the table if it doesn't exist
+        String countSQL = "SELECT COUNT(*) AS row_count FROM Driver;";
+        try (PreparedStatement statement = connection.prepareStatement(countSQL)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("row_count");
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving row count: " + e.getMessage());
+        }
+        return -1;
+    }
+
 
 
 }
