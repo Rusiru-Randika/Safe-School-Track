@@ -6,7 +6,6 @@ abstract class User {
     protected String email;
     protected String phone;
 
-
     public User(int id, String name, String username, String password, String email, String phone) {
         this.id = id;
         this.name = name;
@@ -15,7 +14,6 @@ abstract class User {
         this.email = email;
         this.phone = phone;
     }
-
 
     public int getId() {
         return id;
@@ -54,8 +52,5 @@ abstract class User {
     @Override
     public String toString() {
         return String.format("| %-5d | %-15s | %-15s | %-20s | %-15s |", id, name, username, email, phone);
-        }
+    }
 }
-
-
-

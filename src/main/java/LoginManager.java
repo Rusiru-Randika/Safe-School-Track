@@ -1,20 +1,20 @@
-
 import jakarta.mail.MessagingException;
 import java.util.List;
 import java.util.Scanner;
 
 class LoginManager {
     private static boolean loginStatus = false;
+
     public static boolean getLoginStatus() {
         return loginStatus;
     }
 
     public static void login() throws MessagingException {
         System.out.println("\n________________________________Welcome to Safe School Track_________________________________\n");
-        int option = 0;
         Scanner scn = new Scanner(System.in);
+        int option = 0;
 
-        while (option != 4) { // Exit on option 4
+        while (option != 4) {
             System.out.println("Select an option: \n 1) Login as Parent \n 2) Create new account \n 3) Login as Driver \n 4) Exit");
             System.out.print("\nSelected option: ");
 
@@ -22,30 +22,24 @@ class LoginManager {
                 option = scn.nextInt();
 
                 switch (option) {
-                    case 1: {
+                    case 1:
                         parentLogin(scn);
-                    }
-                    break;
-                    case 2: {
-                        CreateNewUser.CreateUser();
-                    }
-                    break;
-                    case 3: {
-                        DriverLogin(scn);
-                    }
-                    break;
-                    case 4: {
-
+                        break;
+                    case 2:
+                        CreateNewUser.createUser();
+                        break;
+                    case 3:
+                        driverLogin(scn);
+                        break;
+                    case 4:
                         System.out.println("Thank you for using Safe School Track. Exiting now...");
                         System.out.println("_______________________________See you again!_______________________________\n");
                         DatabaseManager.closeConnection();
                         System.exit(0);
-                    }
-                    break;
-                    default: {
+                        break;
+                    default:
                         System.out.println("Enter a valid option\n");
-                        login();
-                    }
+                        break; // Fixed: was recursively calling login() which can cause StackOverflow
                 }
             } else {
                 System.out.println("Invalid input. Please enter a number.\n");
@@ -64,7 +58,7 @@ class LoginManager {
 
             if (userId > 0) {
                 if (processParentPassword(scn, username, userId)) {
-                    return; // Login successful
+                    return;
                 }
             } else {
                 System.out.println("* Invalid username entered *");
@@ -79,17 +73,21 @@ class LoginManager {
             String inputPassword = scn.next();
             String storedPassword = DatabaseManager.giveUserGetPassword(username);
 
+            if (storedPassword == null) {
+                System.out.println("\t* Error retrieving password. Please try again later. *");
+                return false;
+            }
+
             if (storedPassword.equals(inputPassword)) {
                 System.out.println("Checking...");
                 ParentManager parent = DatabaseManager.getParentObject(userId);
                 System.out.println("\t*** Hello! " + parent.getName() + ", You are logged in! ***");
                 loginStatus = true;
-
-                displayAndEditData(parent);
-                return true; // Login successful
+                displayAndEditData(scn, parent);
+                return true;
             } else {
                 System.out.println("\t* Wrong password! *");
-                if (!retryOrGoBack(scn)) return false; // Go back to main menu
+                if (!retryOrGoBack(scn)) return false;
             }
         }
     }
@@ -100,249 +98,209 @@ class LoginManager {
             System.out.print("Do you want to try again or go back? (1: Try again, 2: Go back): ");
             if (scn.hasNextInt()) {
                 retryOption = scn.nextInt();
-                if (retryOption == 2) return false; // Go back
+                if (retryOption == 2) return false;
             } else {
                 System.out.println("Invalid input. Please enter 1 or 2.");
-                scn.next(); // Clear invalid input
+                scn.next();
             }
         }
-        return true; // Retry
+        return true;
     }
 
-    private static void displayAndEditData(ParentManager parent) throws MessagingException {
+    private static void displayAndEditData(Scanner scn, ParentManager parent) throws MessagingException {
         List<Integer> childIds = DatabaseManager.giveParentIdGetStuId(parent.getId());
 
-        if (!childIds.isEmpty()) {
-            System.out.println("Your Data in the Database: ");
-            System.out.println(parent.toString());
-            System.out.println(" ");
-            System.out.println(" ");
-            for (Integer id : childIds) {
-                String[] studentData = DatabaseManager.getStuData(id);
-                if (studentData != null && studentData.length == 7) {
-                    System.out.println("Student Name: " + (studentData[0] != null ? studentData[0] : "-"));
-                    System.out.println("Age: " + (studentData[1] != null ? studentData[1] : "-"));
-                    System.out.println("Address: " + (studentData[2] != null ? studentData[2] : "-"));
-                    System.out.println("School: " + (studentData[3] != null ? studentData[3] : "-"));
-                    System.out.println("Teacher Number: " + (studentData[4] != null ? studentData[4] : "-"));
-                    System.out.println("Status: " + (studentData[5] != null ? studentData[5] : "-"));
-                    System.out.println("Parent ID: " + (studentData[6] != null ? studentData[6] : "-"));
-                    System.out.println("--------------------------------------------");
-                } else {
-                    System.out.println("Invalid Data for Student ID: " + id);
-                    System.out.println("--------------------------------------------");
-                }
-            }
+        if (childIds.isEmpty()) {
+            System.out.println("No child details found.");
+            return;
+        }
 
+        System.out.println("Your Data in the Database: ");
+        System.out.println(parent.toString());
+        System.out.println();
 
-            Scanner scanner = new Scanner(System.in);
-            while (true) {
-                System.out.print("1. Edit Any Student Details\n2. Edit Parent Details\n3. Exit\nEnter Your Choice: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine();
+        for (Integer id : childIds) {
+            printStudentSummary(id);
+        }
 
-                if (choice == 1) {
-                    System.out.println("___________________________________________________________________________________________");
+        while (true) {
+            System.out.print("1. Edit Any Student Details\n2. Edit Parent Details\n3. Exit\nEnter Your Choice: ");
+            int choice = scn.nextInt();
+            scn.nextLine();
+
+            switch (choice) {
+                case 1:
                     System.out.println("___________________________________________________________________________________________");
                     System.out.println("Your child id with name:");
                     for (int childId : childIds) {
                         String[] childData = DatabaseManager.getStuData(childId);
                         System.out.println("--------------");
-                        System.out.printf("ID: %d  |", childId);
-                        System.out.printf("Name: %s%n", childData[0]);
-
+                        System.out.printf("ID: %d  | Name: %s%n", childId, childData[0]);
                     }
-
-                    editStudentDetails(scanner, childIds,parent);
-                } else if (choice == 2) {
-                    editParentDetails(scanner, parent);
-                } else if (choice == 3) {
+                    editStudentDetails(scn, childIds, parent);
                     break;
-                } else {
+                case 2:
+                    editParentDetails(scn, parent);
+                    break;
+                case 3:
+                    return;
+                default:
                     System.out.println("Invalid input. Please enter 1, 2, or 3.");
-                }
+                    break;
             }
-        } else {
-            System.out.println("No child details found.");
         }
     }
 
-    public static void editStudentDetails(Scanner scanner, List<Integer> validIds,ParentManager parent) {
+    private static void printStudentSummary(int id) {
+        String[] data = DatabaseManager.getStuData(id);
+        if (data != null && data.length == 7 && data[0] != null) {
+            System.out.println("Student Name: " + data[0]);
+            System.out.println("Age: " + (data[1] != null ? data[1] : "-"));
+            System.out.println("Address: " + (data[2] != null ? data[2] : "-"));
+            System.out.println("School: " + (data[3] != null ? data[3] : "-"));
+            System.out.println("Teacher Number: " + (data[4] != null ? data[4] : "-"));
+            System.out.println("Status: " + (data[5] != null ? data[5] : "-"));
+            System.out.println("Parent ID: " + (data[6] != null ? data[6] : "-"));
+        } else {
+            System.out.println("Invalid Data for Student ID: " + id);
+        }
+        System.out.println("--------------------------------------------");
+    }
+
+    public static void editStudentDetails(Scanner scn, List<Integer> validIds, ParentManager parent) {
         int id;
         while (true) {
             System.out.print("Enter Student ID to update: ");
-            id = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            id = scn.nextInt();
+            scn.nextLine();
             if (validIds.contains(id)) {
                 break;
-            } else {
-                System.out.println("Invalid Student ID. Please enter one of the displayed IDs.");
             }
+            System.out.println("Invalid Student ID. Please enter one of the displayed IDs.");
         }
 
-
-        String[] studentData = DatabaseManager.getStuData(id);
-        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
-        System.out.println("| Student Name     | Age              | Address          | School           | Teacher Number   | Status                                                | Parent ID        |");
-        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
-        System.out.printf("| %-16s | %-16s | %-16s | %-16s | %-16s | %-55s| %-16s |\n",
-                studentData[0], studentData[1], studentData[2], studentData[3], studentData[4], studentData[5], studentData[6]);
-        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+        printStudentTable(id);
 
         boolean continueEditing = true;
         while (continueEditing) {
             System.out.println("Select the detail to update:");
-            System.out.println("1. Name");
-            System.out.println("2. Age");
-            System.out.println("3. Address");
-            System.out.println("4. School");
-            System.out.println("5. Teacher Number");
-            System.out.println("6. Delete Student account");
-            System.out.println("7. Send Driver a Message");
-            System.out.println("8. Done");
+            System.out.println("1. Name\n2. Age\n3. Address\n4. School\n5. Teacher Number\n6. Delete Student account\n7. Send Driver a Message\n8. Done");
             System.out.print("Enter option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            int option = scn.nextInt();
+            scn.nextLine();
 
             switch (option) {
                 case 1: {
                     System.out.print("Enter New Student Name: ");
-                    String name = scanner.nextLine();
-                    DatabaseManager.updateStuField(id, "name", name);
+                    DatabaseManager.updateStuField(id, "name", scn.nextLine());
                     break;
                 }
                 case 2: {
-                    int age = 0;
-                    while (true) {
-                        System.out.print("Enter New Age: ");
-                        if (scanner.hasNextInt()) {
-                            age = scanner.nextInt();
-                            scanner.nextLine(); // Consume newline
-                            break;
-                        } else {
-                            System.out.println("Invalid input. Please enter a valid age.");
-                            scanner.next(); // Clear the invalid input
-                        }
-                    }
+                    int age = readValidInt(scn, "Enter New Age: ", "Invalid input. Please enter a valid age.");
                     DatabaseManager.updateStuField(id, "age", age);
                     break;
                 }
                 case 3: {
                     System.out.print("Enter New Address: ");
-                    String address = scanner.nextLine();
-                    DatabaseManager.updateStuField(id, "address", address);
+                    DatabaseManager.updateStuField(id, "address", scn.nextLine());
                     break;
                 }
-
                 case 4: {
                     System.out.print("Enter New School: ");
-                    String school = scanner.nextLine();
-                    DatabaseManager.updateStuField(id, "school", school);
+                    DatabaseManager.updateStuField(id, "school", scn.nextLine());
                     break;
                 }
                 case 5: {
-                    String teacherNum = "";
-                    while (true) {
-                        System.out.print("Enter New Teacher Number (10 digits): ");
-                        teacherNum = scanner.next();
-                        if (teacherNum.matches("\\d{10}")) {
-                            break;
-                        } else {
-                            System.out.println("Invalid input. Please enter a valid 10-digit phone number.");
-                        }
-                    }
-                    DatabaseManager.updateStuField(id, "teacherNum", Integer.parseInt(teacherNum));
+                    String teacherNum = readValidPhone(scn);
+                    DatabaseManager.updateStuField(id, "teacherNum", teacherNum);
                     break;
                 }
                 case 6: {
-
                     System.out.print("Are you sure you want to remove the student? (yes/no): ");
-                    String confirmation = scanner.nextLine().toLowerCase();
+                    String confirmation = scn.nextLine().toLowerCase();
                     if (confirmation.equals("yes")) {
-                        removeStudent(scanner, parent);
+                        removeStudent(scn, parent);
                         System.out.println("Student removed successfully.");
                         System.out.println("You will be redirected to the login screen now...");
                         try {
-                            LoginManager.login();  // Wrap in try-catch to handle potential exceptions
+                            LoginManager.login();
                         } catch (Exception e) {
                             System.out.println("Error during login: " + e.getMessage());
                         }
                     } else {
                         System.out.println("Operation cancelled. Returning to the previous menu.");
                     }
-
                     return;
                 }
                 case 7: {
-                    int option1 = 0;
-                    while (option1 < 1 || option1 > 3) {
-                        System.out.println("Select Driver Message: ");
-                        System.out.println("1. Don't pick at home today.");
-                        System.out.println("2. Don't pick at school afternoon.");
-                        System.out.println("3. Type special message");
-
-                        System.out.print("Enter option: ");
-
-                        if (scanner.hasNextInt()) {
-                            option1 = scanner.nextInt();
-                            scanner.nextLine();
-                            if (option1 < 1 || option1 > 3) {
-                                System.out.println("Invalid option selected. Please enter a number between 1 and 7.");
-                            }
-                        } else {
-                            System.out.println("Invalid input. Please enter a number between 1 and 7.");
-                            scanner.next();
-                        }
-                    }
-                    String newStatus;
-                    switch (option1) {
-                        case 1:
-                            newStatus = "Parent message-Don't pick at home today.";
-                            break;
-                        case 2:
-                            newStatus = "Parent message-Don't pick at school afternoon.";
-                            break;
-
-
-                        case 3:
-                            System.out.println("Type special message");
-                            newStatus = "Parent message-" + scanner.nextLine();
-                            break;
-                        default:
-                            return;
-                    }
-
-                    boolean result = DatabaseManager.updateStuField(id, "Student_Status", newStatus);
-                    if (result) {
-                        System.out.println("Message to Driver updated successfully.");
-                    } else {
-                        System.out.println("Failed to update.");
-                    }
+                    handleDriverMessage(scn, id);
+                    break; // Fixed: was falling through into case 8
                 }
-
-
                 case 8: {
                     continueEditing = false;
                     break;
                 }
                 default: {
-                    System.out.println("Invalid option selected. Please enter a number between 1 and 6.");
+                    System.out.println("Invalid option selected. Please enter a number between 1 and 8.");
+                    break;
                 }
             }
 
-            String[] studentData1 = DatabaseManager.getStuData(id);
-            System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
-            System.out.println("| Student Name     | Age              | Address          | School           | Teacher Number   | Status                                                | Parent ID        |");
-            System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
-            System.out.printf("| %-16s | %-16s | %-16s | %-16s | %-16s | %-55s| %-16s |\n",
-                    studentData1[0], studentData1[1], studentData1[2], studentData1[3], studentData1[4], studentData1[5], studentData1[6]);
-            System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
-
+            if (continueEditing) {
+                printStudentTable(id);
+            }
         }
-            System.out.println("Student details updated in the database.");
+        System.out.println("Student details updated in the database.");
     }
 
-    private static void editParentDetails(Scanner scanner, ParentManager parent) throws MessagingException {
+    private static void handleDriverMessage(Scanner scn, int studentId) {
+        int option = 0;
+        while (option < 1 || option > 3) {
+            System.out.println("Select Driver Message:");
+            System.out.println("1. Don't pick at home today.");
+            System.out.println("2. Don't pick at school afternoon.");
+            System.out.println("3. Type special message");
+            System.out.print("Enter option: ");
+
+            if (scn.hasNextInt()) {
+                option = scn.nextInt();
+                scn.nextLine();
+                if (option < 1 || option > 3) {
+                    System.out.println("Invalid option. Please enter 1, 2, or 3.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scn.next();
+            }
+        }
+
+        String newStatus = switch (option) {
+            case 1 -> "Parent Message - Don't pick at home today.";
+            case 2 -> "Parent Message - Don't pick at school afternoon.";
+            case 3 -> {
+                System.out.print("Type special message: ");
+                yield "Parent Message - " + scn.nextLine();
+            }
+            default -> null;
+        };
+
+        if (newStatus != null) {
+            boolean result = DatabaseManager.updateStuField(studentId, "Student_Status", newStatus);
+            System.out.println(result ? "Message to Driver updated successfully." : "Failed to update.");
+        }
+    }
+
+    private static void printStudentTable(int id) {
+        String[] data = DatabaseManager.getStuData(id);
+        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+        System.out.println("| Student Name     | Age              | Address          | School           | Teacher Number   | Status                                                | Parent ID        |");
+        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+        System.out.printf("| %-16s | %-16s | %-16s | %-16s | %-16s | %-55s| %-16s |%n",
+                data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
+        System.out.println("+------------------+------------------+------------------+------------------+------------------+-------------------------------------------------------+------------------+");
+    }
+
+    private static void editParentDetails(Scanner scn, ParentManager parent) throws MessagingException {
         boolean continueEditing = true;
 
         while (continueEditing) {
@@ -350,42 +308,34 @@ class LoginManager {
             System.out.println("Select the detail to update:");
             System.out.println("1. Name\n2. Email\n3. Phone\n4. Add Student\n5. Remove Parent Account\n6. Done");
             System.out.print("Enter option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            int option = scn.nextInt();
+            scn.nextLine();
 
             switch (option) {
                 case 1: {
                     System.out.print("Enter New Parent Name: ");
-                    parent.setName(scanner.nextLine());
+                    parent.setName(scn.nextLine());
                     break;
                 }
-
                 case 2: {
                     System.out.print("Enter New Email: ");
-                    parent.setEmail(scanner.nextLine());
-
+                    parent.setEmail(scn.nextLine());
                     break;
                 }
                 case 3: {
-                    String phone;
-                    while (true) {
-                        System.out.print("Enter New Phone Number (10 digits): ");
-                        phone = scanner.next();
-                        if (phone.matches("\\d{10}")) break;
-                        System.out.println("Invalid input. Please enter a valid 10-digit phone number.");
-                    }
+                    String phone = readValidPhone(scn);
                     parent.setPhone(phone);
                     break;
                 }
                 case 4: {
-                    addStudent(scanner, parent);
+                    addStudent(scn, parent);
                     break;
                 }
                 case 5: {
-                   DatabaseManager.deleteParentData(parent.getId());
-                    System.out.println("Please press any key to continue to main menu.");
+                    DatabaseManager.deleteParentData(parent.getId());
+                    System.out.println("Account deleted. Redirecting to main menu...");
                     login();
-                    break;
+                    return;
                 }
                 case 6: {
                     continueEditing = false;
@@ -393,82 +343,82 @@ class LoginManager {
                 }
                 default: {
                     System.out.println("Invalid option. Please try again.");
+                    break;
                 }
             }
         }
     }
 
-    private static void addStudent(Scanner scanner, ParentManager parent) {
+    private static void addStudent(Scanner scn, ParentManager parent) {
         System.out.print("Enter Student Name: ");
-        String stuName = scanner.nextLine();
+        String stuName = scn.nextLine();
 
-        System.out.print("Enter Student Age: ");
-        int stuAge = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        int stuAge = readValidInt(scn, "Enter Student Age: ", "Invalid input. Please enter a valid age.");
 
         System.out.print("Enter Student Address: ");
-        String stuAddress = scanner.nextLine();
+        String stuAddress = scn.nextLine();
 
         System.out.print("Enter Student School: ");
-        String stuSchool = scanner.nextLine();
+        String stuSchool = scn.nextLine();
 
         System.out.print("Enter Teacher Number (10 digits): ");
-        String teacherNum = scanner.next();
+        String teacherNum = scn.next();
 
         DatabaseManager.insertStuData(stuName, stuAge, stuAddress, stuSchool, teacherNum, "active", parent.getId());
         parent.setNumberOfStudents(parent.getNumberOfStudents() + 1);
     }
 
-    private static void removeStudent(Scanner scanner, ParentManager parent) {
-        System.out.println("This Cannot Be Undone, Are you Sure?(1-yes,2-no)");
-        if (scanner.nextInt() == 1) {
-            List<Integer> childIds = DatabaseManager.giveParentIdGetStuId(parent.getId());
-
-            if (!childIds.isEmpty()) {
-                System.out.println("Your child details:");
-                for (int childId : childIds) {
-                    String[] childData = DatabaseManager.getStuData(childId);
-                    System.out.printf("ID: %d, Name: %s%n", childId, childData[0]);
-                }
-                System.out.print("Enter Student ID to remove: ");
-                int stuId = scanner.nextInt();
-                DatabaseManager.deleteStuData(stuId);
-                parent.setNumberOfStudents(parent.getNumberOfStudents() - 1);
-            } else {
-                System.out.println("No child details found.");
-            }
-        } else {
-
+    private static void removeStudent(Scanner scn, ParentManager parent) {
+        System.out.println("This Cannot Be Undone, Are you Sure? (1-yes, 2-no)");
+        if (scn.nextInt() != 1) {
+            return;
         }
+
+        List<Integer> childIds = DatabaseManager.giveParentIdGetStuId(parent.getId());
+        if (childIds.isEmpty()) {
+            System.out.println("No child details found.");
+            return;
+        }
+
+        System.out.println("Your child details:");
+        for (int childId : childIds) {
+            String[] childData = DatabaseManager.getStuData(childId);
+            System.out.printf("ID: %d, Name: %s%n", childId, childData[0]);
+        }
+        System.out.print("Enter Student ID to remove: ");
+        int stuId = scn.nextInt();
+        DatabaseManager.deleteStuData(stuId);
+        parent.setNumberOfStudents(parent.getNumberOfStudents() - 1);
     }
 
-    private static void DriverLogin(Scanner scn) {
+    // =========================================================================
+    // Driver Login & Operations
+    // =========================================================================
+
+    private static void driverLogin(Scanner scn) {
         System.out.println("\n___________________________________Driver Login____________________________________\n");
 
         while (true) {
-            String username;
-            while(true){
             System.out.print("Enter username: ");
-            username = scn.next();
-            if(DatabaseManager.isDriverInDb(username)){
-               break;
+            String username = scn.next();
+
+            if (!DatabaseManager.isDriverInDb(username)) {
+                System.out.println("* Invalid username entered *");
+                if (!retryOrGoBack(scn)) return;
+                continue;
             }
 
-            }
-            int userId = DatabaseManager.giveDriverGetId(username);
-            if (userId > 0) {
+            Integer userId = DatabaseManager.giveDriverGetId(username);
+            if (userId != null && userId > 0) {
                 if (processDriverPassword(scn, username, userId)) {
-                    return; // Login successful
+                    return;
                 }
             } else {
                 System.out.println("* Invalid username entered *");
                 if (!retryOrGoBack(scn)) return;
-                }
-
-
             }
         }
-
+    }
 
     private static boolean processDriverPassword(Scanner scn, String username, int id) {
         while (true) {
@@ -478,7 +428,7 @@ class LoginManager {
 
             if (storedPassword == null) {
                 System.out.println("\t* Error retrieving password. Please try again later. *");
-                return false; // Exit on failure to retrieve password
+                return false;
             }
 
             if (storedPassword.equals(inputPassword)) {
@@ -488,21 +438,18 @@ class LoginManager {
                     System.out.println("\t*** Hello! " + driver.getName() + ", You are logged in! ***");
                     loginStatus = true;
                     System.out.println("Your details:\n" + driver.toString());
-                    ChooseWhatToDoDriver(scn, driver);
-
-                    // Perform actions for a logged-in driver
-                    return true; // Login successful
+                    chooseDriverAction(scn, driver);
+                    return true;
                 } else {
                     System.out.println("\t* Driver details not found. Please contact support. *");
                     return false;
                 }
             } else {
                 System.out.println("\t* Wrong password! *");
-                if (!retryOrGoBack(scn)) return false; // Go back to main menu
+                if (!retryOrGoBack(scn)) return false;
             }
         }
     }
-
 
     private static void driverDataUpdate(Scanner scn, Driver driver) {
         boolean continueUpdating = true;
@@ -510,65 +457,37 @@ class LoginManager {
             System.out.println("\nCurrent Driver Details:");
             System.out.println(driver.toString());
             System.out.println("\nSelect the field to update:");
-            System.out.println("1. Name");
-            System.out.println("2. Password");
-            System.out.println("3. Email");
-            System.out.println("4. Phone");
-            System.out.println("5. Van Number");
-            System.out.println("6. Delete Account");
-            System.out.println("7. Exit");
-
+            System.out.println("1. Name\n2. Password\n3. Email\n4. Phone\n5. Van Number\n6. Delete Account\n7. Exit");
             System.out.print("Enter your choice: ");
-            int choice ;
 
-
-            while (true) {
-                try {
-                    choice = scn.nextInt();
-                    scn.nextLine(); // Consume the newline character
-                    break;
-                } catch (java.util.InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a valid integer.");
-                    scn.nextLine();
-                }
-            }
+            int choice = readValidInt(scn, "", "Invalid input. Please enter a valid integer.");
 
             switch (choice) {
                 case 1:
                     System.out.print("Enter new name: ");
-                    String newName = scn.nextLine();
-                    driver.setName(newName);
+                    driver.setName(scn.nextLine());
                     System.out.println("Name updated successfully!");
                     break;
-
                 case 2:
                     System.out.print("Enter new password: ");
-                    String newPassword = scn.nextLine();
-                    driver.setPassword(newPassword);
+                    driver.setPassword(scn.nextLine());
                     System.out.println("Password updated successfully!");
                     break;
-
                 case 3:
                     System.out.print("Enter new email: ");
-                    String newEmail = scn.nextLine();
-                    driver.setEmail(newEmail);
+                    driver.setEmail(scn.nextLine());
                     System.out.println("Email updated successfully!");
                     break;
-
                 case 4:
                     System.out.print("Enter new phone number: ");
-                    String newPhone = scn.nextLine();
-                    driver.setPhone(newPhone);
+                    driver.setPhone(scn.nextLine());
                     System.out.println("Phone number updated successfully!");
                     break;
-
                 case 5:
                     System.out.print("Enter new van number: ");
-                    String newVanNumber = scn.nextLine();
-                    driver.setVanNumber(newVanNumber);
+                    driver.setVanNumber(scn.nextLine());
                     System.out.println("Van number updated successfully!");
                     break;
-
                 case 6:
                     System.out.print("Are you sure you want to delete this account? (Y/N): ");
                     String confirmation = scn.nextLine().trim().toUpperCase();
@@ -585,12 +504,10 @@ class LoginManager {
                         System.out.println("Account deletion canceled.");
                     }
                     break;
-
                 case 7:
                     continueUpdating = false;
                     System.out.println("Exiting update menu.");
                     break;
-
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
                     break;
@@ -598,43 +515,60 @@ class LoginManager {
         }
     }
 
-
-    private static void ChooseWhatToDoDriver (Scanner scn,Driver driver){
-        boolean set = true;
-        while (set) {
+    private static void chooseDriverAction(Scanner scn, Driver driver) {
+        boolean running = true;
+        while (running) {
             System.out.println("\nChoose from:");
-            System.out.println("1. Update Account Details");
-            System.out.println("2. Change Student Status");
-            System.out.println("3. Exit");
-
+            System.out.println("1. Update Account Details\n2. Change Student Status\n3. Exit");
             System.out.print("Enter your choice: ");
             int choice = scn.nextInt();
-            scn.nextLine(); // Consume newline
+            scn.nextLine();
 
             switch (choice) {
                 case 1:
                     driverDataUpdate(scn, driver);
                     break;
-
                 case 2:
                     System.out.println("------------------------Student Status Update section----------------------");
                     StudentManager.sortFromSchool(scn);
                     break;
-
                 case 3:
-                    set = false;
+                    running = false;
                     System.out.println("Exiting the menu. Goodbye!");
                     break;
-
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
                     break;
             }
-
         }
-
     }
 
+    // =========================================================================
+    // Input Validation Helpers
+    // =========================================================================
+
+    static int readValidInt(Scanner scn, String prompt, String errorMsg) {
+        while (true) {
+            if (!prompt.isEmpty()) System.out.print(prompt);
+            if (scn.hasNextInt()) {
+                int value = scn.nextInt();
+                scn.nextLine();
+                return value;
+            } else {
+                System.out.println(errorMsg);
+                scn.next();
+            }
+        }
+    }
+
+    static String readValidPhone(Scanner scn) {
+        while (true) {
+            System.out.print("Enter Phone Number (10 digits): ");
+            String phone = scn.next();
+            if (phone.matches("\\d{10}")) {
+                return phone;
+            }
+            System.out.println("Invalid input. Please enter a valid 10-digit phone number.");
+        }
+    }
 }
-
-
